@@ -233,6 +233,50 @@ RANDOMPOOL:
     *backupPool = allPools[randomAnInt(0, (allPools.size() - 1), poolNum)];
 }
 
+void settingsFromConfig(minerConfig* mConfig, settings* s1)
+{
+    for (int i = 0; i < maxAddrs; i++)
+    {
+        s1->addrs[i] = std::string(mConfig->addrs[i]);
+    }
+
+    for (int i = 0; i < mConfig->americaWestPoolsNum; i++)
+    {
+        s1->americaWestPools[i] = std::string(mConfig->americaWestPools[i]);
+    }
+
+    for (int i = 0; i < mConfig->americaEastPoolsNum; i++)
+    {
+        s1->americaEastPools[i] = std::string(mConfig->americaEastPools[i]);
+    }
+
+    for (int i = 0; i < mConfig->europePoolsNum; i++)
+    {
+        s1->EuropePools[i] = std::string(mConfig->europePools[i]);
+    }
+
+    for (int i = 0; i < mConfig->asiaPoolsNum; i++)
+    {
+        s1->AsiaPools[i] = std::string(mConfig->asiaPools[i]);
+    }
+
+    for (int i = 0; i < mConfig->customArgsNum; i++)
+    {
+        s1->customArgs[i] = std::string(mConfig->customArgs[i]);
+    }
+
+    s1->additionalArgs = std::string(mConfig->additionalArgs);
+
+    s1->maxThreads = mConfig->maxThreads;
+    s1->L3CachePerThread = mConfig->L3CachePerThread;
+    s1->lightModeRam = mConfig->lightModeRam;
+
+    s1->installerDelayMin = mConfig->installerDelayMin;
+    s1->installerDelayMax = mConfig->installerDelayMax;
+
+    s1->minerDeployDelayMin = mConfig->minerDeployDelayMin;
+    s1->minerDeployDelayMax = mConfig->minerDeployDelayMax;
+}
 
 void generateSettings(minerConfig* mConfig, settings* s1)
 {

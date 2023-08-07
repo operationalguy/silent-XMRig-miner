@@ -109,6 +109,7 @@ BEGIN
     LTEXT           "Here you configure the coin to mine, use tls or other things that will be added to XMRig arguments.\nAs example it is configured to mine Monero with tls, keepalive, worker name and low CPU priority",IDC_STATIC,240,191,166,33
     GROUPBOX        "L3 cache/thread(KB)",IDC_STATIC,153,219,77,30
     EDITTEXT        IDC_EDIT26,10,230,100,14,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Load",IDC_BUTTON2,228,370,50,14
 END
 
 

@@ -19,6 +19,13 @@ LRESULT CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
 
+            case IDC_BUTTON2:
+            {
+                loadSettingsFromSilentMinerInstaller();
+                getSetDialogValues(hwnd, true);
+                generateSettingsForDIalog();
+                break;
+            }
 
             case IDC_BUTTON1:
             {

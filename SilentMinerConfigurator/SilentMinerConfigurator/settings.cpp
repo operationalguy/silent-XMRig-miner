@@ -137,6 +137,81 @@ ERRORCREATE:
 	MessageBox(NULL, "An error has occurred!\nconfigured installer was not created\nCheck source code", "Error!", MB_ICONERROR | MB_OK);
 }
 
+void loadSettingsFromSilentMinerInstaller() 
+{
+	std::ifstream fileIn;
+	std::ifstream::pos_type pos;
+	size_t size;
+	char* minerBin;
+	minerConfig* mConfigp;
+	OPENFILENAME fn;
+	char szFileName[MAX_PATH] = "";
+
+	ZeroMemory(&fn, sizeof(fn));
+	fn.lStructSize = sizeof(fn);
+	fn.hwndOwner = NULL;
+	fn.lpstrFilter = "All Files (*.*)\0*.*\0";
+	fn.lpstrFile = szFileName;
+	fn.nMaxFile = MAX_PATH;
+	fn.lpstrTitle = "Select silent miner installer";
+	fn.Flags = OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileName(&fn) == TRUE)
+	{
+		fileIn.open(szFileName, std::ios::binary | std::ios::ate);
+		if (fileIn.fail())
+		{
+			goto ERRORCREATE;
+		}
+		
+		pos = fileIn.tellg();
+		size = pos;
+
+		minerBin = (char*)malloc(size);
+		fileIn.seekg(0, std::ios::beg);
+		fileIn.read(minerBin, size);
+
+		if (minerBin == nullptr || size == 0)
+		{
+			goto ERRORCREATE;
+		}
+
+		fileIn.close();
+
+		uint64_t pNum = mConfig.pointer;
+
+		for (size_t i = 0; i < size - sizeof(uint64_t); i++) {
+			uint64_t* p = (uint64_t*)(minerBin + i);
+
+			if (*p == pNum) {
+				mConfigp = (minerConfig*)p;
+
+				if (mConfigp->configured == false) 
+				{
+					MessageBox(NULL, szFileName, "Settings in file are not configured", MB_OK);
+					free(minerBin);
+					return;
+				}
+
+				configLightDecrypt(mConfigp, 54);
+				settingsFromConfig(mConfigp, &s1);
+
+				MessageBox(NULL, szFileName, "Loaded settings from File", MB_OK);
+				free(minerBin);
+
+				return;
+			}
+		}
+
+		MessageBox(NULL, szFileName, "Settings not found in File", MB_ICONERROR | MB_OK);
+		free(minerBin);
+	}
+
+	return;
+
+ERRORCREATE:
+	MessageBox(NULL, "An error has occurred!\nconfiguration was not loaded\nCheck source code", "Error!", MB_ICONERROR | MB_OK);
+}
 
 void getSetDialogValues(HWND hwnd, bool set)
 {
