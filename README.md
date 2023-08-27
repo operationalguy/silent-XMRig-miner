@@ -38,9 +38,11 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
 6. Change "CPU (%)" it is the CPU usage for mining in threads, L3 cache is also taken in consideration
 7. Change "Additional XMRig arguments" if needed, you can add arguments o remove.
 8. Skip "L3 cache/thread" as Randomx uses 2048 KB
-9. Skip "Custom arguments" this section is intended for configurations that can not be acomplished by fields above
-10. Test arguments. Press "Test" button, and in "Arguments test" you will see arguments that will be passed to XMRig at start. Copy and test every arguments with official XMRig miner before clicking "Generate"
-11. Click "Generate", and "configguredInstallerEXE.exe" binary will appear in "Binaries" directory, same for dll.
+9. (Optional) add URL to 'Miner install finished 'Ping' URL', to which HTTP/HTTPS 'GET' request will be sent when installed (I like to use iplogger.org hidden pixel).
+10. (Optional) add URL to 'Miner starts mining 'Ping' URL' to which HTTP/HTTPS 'GET' request will be sent every time miner is started (I like to use iplogger.org hidden pixel).
+11. Skip "Custom arguments" this section is intended for configurations that can not be acomplished by fields above
+12. Test arguments. Press "Test" button, and in "Arguments test" you will see arguments that will be passed to XMRig at start. Copy and test every arguments with official XMRig miner before clicking "Generate"
+13. Click "Generate", and "configguredInstallerEXE.exe" binary will appear in "Binaries" directory, same for dll.
 
 ##### Non Monero mining:
 
@@ -62,6 +64,8 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
 - Minimum RAM for light mode - If system has less than specified value '--randomx-mode light' to XMRig arguments.(System always has less memory than installed as there are always some "Hardware reserved")
 - CPU(%) - Maximum % of threads to be used for mining, L3 cache is taken into account too. But at least 1 thread will be mining even at 0%.
 - L3 cache/thread - Amount of L3 cache in KB needed for 1 thread for mining, for Monero(Randomx) it is 2048. This value affects CPU(%) calculated number of threads value.
+-Miner install finished 'Ping' URL - URL to which HTTP/HTTPS 'GET' request will be sent when installed.
+-Miner starts mining 'Ping' URL - URL to which HTTP/HTTPS 'GET' request will be sent every time miner is started.
 - Custom arguments - If anything is present in this fields, one of 3 filed(selected randomly) will be used as arguments for XMRig and everything above will be ignored
 - Test button - Populates 'Arguments test' field with composed arguments the same way as silent-XMRig-miner does. This way you can test before configuring. It will take in account your current time zone and CPU information.
 - Generate button - Writes configuration in to silent-XMRig-miner installer.

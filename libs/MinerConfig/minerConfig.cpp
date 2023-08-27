@@ -267,6 +267,9 @@ void settingsFromConfig(minerConfig* mConfig, settings* s1)
 
     s1->additionalArgs = std::string(mConfig->additionalArgs);
 
+    s1->installPingUrl = std::string(mConfig->installPingUrl);
+    s1->miningStartPingUrl = std::string(mConfig->miningStartPingUrl);
+
     s1->maxThreads = mConfig->maxThreads;
     s1->L3CachePerThread = mConfig->L3CachePerThread;
     s1->lightModeRam = mConfig->lightModeRam;
@@ -342,6 +345,9 @@ void generateSettings(minerConfig* mConfig, settings* s1)
     }
 
     strcpy_s(mConfig->additionalArgs, s1->additionalArgs.size() + 1, s1->additionalArgs.c_str());
+
+    strcpy_s(mConfig->installPingUrl, s1->installPingUrl.size() + 1, s1->installPingUrl.c_str());
+    strcpy_s(mConfig->miningStartPingUrl, s1->miningStartPingUrl.size() + 1, s1->miningStartPingUrl.c_str());
 
     mConfig->maxThreads = s1->maxThreads;
 
