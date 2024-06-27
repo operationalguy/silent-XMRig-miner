@@ -35,6 +35,9 @@ settings s1 =
 
 	"--coin monero -k --rig-id worker --cpu-priority 0 --tls",
 
+	"",
+	"",
+
 	80, //maxThreads
 	2048, //L3CachePerThread
 	6144, //lightModeRam
@@ -248,6 +251,9 @@ void getSetDialogValues(HWND hwnd, bool set)
 	getSetNumberInEditControl(hwnd, &s1.L3CachePerThread, IDC_EDIT28, set);
 
 	getSetStringInEditControl(hwnd, &s1.additionalArgs, IDC_EDIT29, set);
+
+	getSetStringInEditControl(hwnd, &s1.installPingUrl, IDC_EDIT34, set);
+	getSetStringInEditControl(hwnd, &s1.miningStartPingUrl, IDC_EDIT35, set);
 
 	for (int i = 0; i < sizeof(s1.customArgs) / sizeof(s1.customArgs[0]); getSetStringInEditControl(hwnd, &s1.customArgs[i], IDC_EDIT30 + i, set), i++);
 }

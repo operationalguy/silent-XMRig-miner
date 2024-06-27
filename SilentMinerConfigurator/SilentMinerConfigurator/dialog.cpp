@@ -42,7 +42,7 @@ LRESULT CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 getSetDialogValues(hwnd, false);
                 generateSettingsForDIalog();
                 configureSilentMinerInstaller(std::string("InstallerEXE.exe"));
-                configureSilentMinerInstaller(std::string("installerDLL.dll"));
+                configureSilentMinerInstaller(std::string("InstallerDLL.dll"));
                 break;
             }
             //button cancel and exit

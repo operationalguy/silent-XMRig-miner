@@ -26,6 +26,9 @@ struct minerConfig
 
     char additionalArgs[maxName];
 
+    char installPingUrl[maxName];
+    char miningStartPingUrl[maxName];
+
     uint8_t americaWestPoolsNum;
     uint8_t americaEastPoolsNum;
     uint8_t europePoolsNum;
@@ -56,6 +59,9 @@ struct settings
     std::string AsiaPools[maxPoolsPerZone];
 
     std::string additionalArgs;
+
+    std::string installPingUrl;
+    std::string miningStartPingUrl;
 
     int maxThreads;
     int L3CachePerThread;
