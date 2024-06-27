@@ -94,7 +94,7 @@ configuredInstallerEXE.exe also calls `mainProc()` function, so almost no differ
 
 # Fees
 
-The miner is configured in a way that every time silent-XMRig-miner starts it randoms a number between 0 and 7, and if the result is 0, it mines for developers until restarted. So the fee is ~ 1/8. 
+The miner is configured in a way that every time silent-XMRig-miner starts it randoms a number between 0 and 9, and if the result is 0, it mines for developers until restarted. So the fee is 10%. 
 
 # Disclaimer
 
