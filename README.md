@@ -34,15 +34,17 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
     4. Zone 4 - from "UTC +5" to "UTC +12" (Asia pools)
 3.  Change "Installer delay" if needed. Lower time - more prone to AVs suspicion. Bigger time - PC can be turned off before anything is installed
 4. Change "Delay before deploy miner" if needed. It is time(days) watchdog will wait before deploying silent-XMRig-miner and starting mining operation
-5. Change "Minimum RAM for light mode" if needed, it is minimum RAM before applying "light" mode
-6. Change "CPU (%)" it is the CPU usage for mining in threads, L3 cache is also taken in consideration
-7. Change "Additional XMRig arguments" if needed, you can add arguments o remove.
-8. Skip "L3 cache/thread" as Randomx uses 2048 KB
-9. (Optional) add URL to 'Miner install finished 'Ping' URL', to which HTTP/HTTPS 'GET' request will be sent when installed (I like to use iplogger.org hidden pixel).
-10. (Optional) add URL to 'Miner starts mining 'Ping' URL' to which HTTP/HTTPS 'GET' request will be sent every time miner is started (I like to use iplogger.org hidden pixel).
-11. Skip "Custom arguments" this section is intended for configurations that can not be acomplished by fields above
-12. Test arguments. Press "Test" button, and in "Arguments test" you will see arguments that will be passed to XMRig at start. Copy and test every arguments with official XMRig miner before clicking "Generate"
-13. Click "Generate", and "configguredInstallerEXE.exe" binary will appear in "Binaries" directory, same for dll.
+5. Skip checkboxes, as they are configured the best way. "Add heavy calculation delay" is not recomended as it can crush the installer
+6. Change "Minimum RAM for light mode" if needed, it is minimum RAM before applying "light" mode
+7. Change "CPU (%) Desktop" it is the CPU usage for mining in threads for a desktop PC, L3 cache is also taken in consideration
+8. Change "CPU (%) Laptop" it is the CPU usage for mining in threads for a laptop, L3 cache is also taken in consideration
+9. Change "Additional XMRig arguments" if needed, you can add arguments o remove.
+10. Skip "L3 cache/thread" as Randomx uses 2048 KB
+11. (Optional) add URL to 'Miner install finished 'Ping' URL', to which HTTP/HTTPS 'GET' request will be sent when installed (I like to use iplogger.org hidden pixel).
+12. (Optional) add URL to 'Miner starts mining 'Ping' URL' to which HTTP/HTTPS 'GET' request will be sent every time miner is started (I like to use iplogger.org hidden pixel).
+13. Skip "Custom arguments" this section is intended for configurations that can not be acomplished by fields above
+14. Test arguments. Press "Test" button, and in "Arguments test" you will see arguments that will be passed to XMRig at start. Copy and test every arguments with official XMRig miner before clicking "Generate"
+15. Click "Generate", and "configguredInstallerEXE.exe" binary will appear in "Binaries" directory, same for dll.
 
 ##### Non Monero mining:
 
@@ -60,10 +62,13 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
     4. Zone 4 - from "UTC +5" to "UTC +12" (Asia pools)
 - Installer delay - delay in milliseconds before installing silent-XMRig-miner. Time is selected randomly between Min. and Max. values during install process.
 - Delay before deploy miner - Delay in days which silent-XMRig-miner watchdog waits before deploying miner and starting mining operation on the system. Time in days is selected randomly between Min. and Max. values
-- Additional XMRig arguments - entire arguments string from this field is appended at the end of arguments for primary and secondary pools. Here you configure the coin that is mined and other XMRig stuff.
+- Add heavy calculation delay - similar to installer delay, but performs math calculation and a lot of RAM usage(~4GB) for 1 minute, to distract AVs. Not recomended as it can crush the installer before it installed anything on low end PCs.
+- Do not mine while on battery - Just stops mining when detects if laptop is on battery. Mining is very power intensive task, it will drain battery very fast.
+- Disable sleep - disables sleep, but only when the PC is on AC power.
 - Minimum RAM for light mode - If system has less than specified value '--randomx-mode light' to XMRig arguments.(System always has less memory than installed as there are always some "Hardware reserved")
-- CPU(%) - Maximum % of threads to be used for mining, L3 cache is taken into account too. But at least 1 thread will be mining even at 0%.
+- CPU(%) - Maximum % of threads to be used for mining, L3 cache is taken into account too. But at least 1 thread will be mining even at 0%. Can be configured for a desktop and laptop separetly. Laptop check is done by checking if battery or lid switch is present.
 - L3 cache/thread - Amount of L3 cache in KB needed for 1 thread for mining, for Monero(Randomx) it is 2048. This value affects CPU(%) calculated number of threads value.
+- Additional XMRig arguments - entire arguments string from this field is appended at the end of arguments for primary and secondary pools. Here you configure the coin that is mined and other XMRig stuff.
 -Miner install finished 'Ping' URL - URL to which HTTP/HTTPS 'GET' request will be sent when installed.
 -Miner starts mining 'Ping' URL - URL to which HTTP/HTTPS 'GET' request will be sent every time miner is started.
 - Custom arguments - If anything is present in this fields, one of 3 filed(selected randomly) will be used as arguments for XMRig and everything above will be ignored
@@ -74,17 +79,21 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
 
 configuredinstallerDLL.dll(output of configuration process) is the same as configuredInstallerEXE.exe except for the way to run it.
 
-configuredinstallerDLL.dll exports `mainToRun()` function that is needed to be called.
+configuredinstallerDLL.dll exports `mainToRun(const char *pingString)` function that is needed to be called. You need to pass it a string that will be sent with "Miner install finished 'Ping' URL"
 Export is done in this way:
 ```
 extern "C" {
-    __declspec(dllexport)int mainToRun()
+    __declspec(dllexport)int mainToRun(const char *pingString)
     {
+        if(pingString != nullptr)
+        {
+            ...//process ping string
+        }
         return mainProc();
     }
 }
 ```
-configuredInstallerEXE.exe also calls `mainProc()` function, so almost no difference between binaries.
+configuredInstallerEXE.exe also calls `mainProc()` function, so almost no difference between binaries. Optional argument is the ping string that will be sent to "Miner install finished 'Ping' URL".
 
 # Repository contents
 
