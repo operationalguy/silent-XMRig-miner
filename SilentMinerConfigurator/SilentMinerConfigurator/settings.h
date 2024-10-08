@@ -16,7 +16,7 @@ void getSetDialogValues(HWND hwnd, bool set);
 void showTestValue(HWND hwnd);
 
 /*Creates miner installer binaries with new minerConfig*/
-void configureSilentMinerInstaller(std::string binaryName);
+void configureSilentMinerInstaller();
 
 void loadSettingsFromSilentMinerInstaller();
 

@@ -139,7 +139,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetDir)$(TargetName).exe" "$(SolutionDir)..\Binaries\$(TargetName).exe"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -151,6 +152,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\libs\MinerConfig\minerConfig.h" />
     <ClInclude Include="dialog.h" />
+    <ClInclude Include="InstallerDLL.h" />
+    <ClInclude Include="InstallerEXE.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="settings.h" />
   </ItemGroup>

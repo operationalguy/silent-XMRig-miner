@@ -425,11 +425,11 @@ std::string constructArguments(minerConfig* mConfigp)
         uint32_t threadsToMine = 0;
         if (isLaptop()) 
         {
-            uint32_t threadsToMine = determineThreadsToMine(mConfigp->maxThreadsLaptop, mConfigp->L3CachePerThread);
+            threadsToMine = determineThreadsToMine(mConfigp->maxThreadsLaptop, mConfigp->L3CachePerThread);
         }
         else 
         {
-            uint32_t threadsToMine = determineThreadsToMine(mConfigp->maxThreadsDesktop, mConfigp->L3CachePerThread);
+            threadsToMine = determineThreadsToMine(mConfigp->maxThreadsDesktop, mConfigp->L3CachePerThread);
         }
         selectPoolByLocation(mConfigp, &primaryPool, &backupPool);
         //First pool
