@@ -41,6 +41,12 @@
     <ClInclude Include="..\..\libs\MinerConfig\minerConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InstallerDLL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InstallerEXE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SilentMinerConfigurator.rc">

